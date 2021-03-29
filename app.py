@@ -29,9 +29,10 @@ def callback():
 
 def sendText(user, text):
   LINE_API = 'https://api.line.me/v2/bot/message/reply'
+  Authorization = 'Bearer ' + os.environ['Authorization'] # ตั้ง Config vars ใน heroku พร้อมค่า Access token
   headers = {
     'Content-Type': 'application/json; charset=UTF-8',
-    'Authorization': os.environ['Authorization']    # ตั้ง Config vars ใน heroku พร้อมค่า Access token
+    'Authorization': Authorization
   }
   data = json.dumps({
     "replyToken":user,

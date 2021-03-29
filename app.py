@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 import os
 import json
 import numpy as np
@@ -24,8 +24,53 @@ def index():
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
-    if request.method == 'POST':
-        return "OK"
+    question_from_dialogflow_raw = request.get_json(silent=True, force=True)
+
+    answer_from_bot = generating_answer(question_from_dialogflow_raw)
+
+    r = make_response(answer_from_bot)
+    r.headers['Content-Type'] = 'application/json'
+    return r
+
+def generating_answer(question_from_dialogflow_dict):
+    print(json.dumps(question_from_dialogflow_dict, indent=4, ensure_ascii=False))
+
+    intent_group_question_str = question_from_dialogflow_dict["queryResult"]["intent"]["displayName"]
+
+    if intent_group_question_str == 'กินอะไรดี':
+      answer_str = menurecommendation()
+    elif intent_group_question_str == 'BMI - Confirmed W and H':
+      answer_str = BMI_calculation(question_from_dialogflow_dict)
+    else: answer_str = "หนูไม่รู้"
+
+    answer_from_bot = {"fulfilmentText": answer_str}
+
+    answer_from_bot = json.dumps(answer_from_bot, indent=4)
+
+    return answer_from_bot
+
+def menurecommendation():
+    menu_name = 'สุกี้แห้ง'
+    answer_function = menu_name + ' สิ น่ากินนะ'
+    return answer_function
+
+def BMI_calculation(response_dict):
+    weight_kg = float(response_dict["queryResult"]["outputContexts"][2]["parameters"]["Weight.original"])    
+    height_cm = float(response_dict["queryResult"]["outputContexts"][2]["parameters"]["Height.original"])    
+
+    BMI = weight_kg / (height_cm/100)**2
+    if BMI < 18.5 :
+      answer_function = "คุณผอมเกินไปนะ"
+    elif 18.5 <= BMI < 23.0 :
+      answer_function = "คุณมีน้ำหนักปกติ"
+    elif 23.0 <= BMI < 25.0 :
+      answer_function = "คุณมีน้ำหนักเกิน"
+    elif 25.0 <= BMI < 30.0 :
+      answer_function = "คุณอ้วน"
+    else :
+      answer_function = "คุณอ้วนมาก"
+
+    return answer_function
 
 @app.route('/callback', methods=['POST'])
 def callback():

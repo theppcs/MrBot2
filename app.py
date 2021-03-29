@@ -3,6 +3,14 @@ import os
 import json
 import requests
 
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage,TemplateSendMessage,ImageSendMessage, StickerSendMessage, AudioSendMessage
+)
+from linebot.models.template import *
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -20,14 +28,54 @@ def callback():
   json_line = request.get_json()
   json_line = json.dumps(json_line)
   decoded = json.loads(json_line)
-  user = decoded["events"][0]['replyToken']
+  #user = decoded["events"][0]['replyToken']
   #id=[d['replyToken'] for d in user][0]
   #print(json_line)
-  print("ผู้ใช้：",user)
-  sendText(user,'งง') # ส่งข้อความ งง
+
+  no_event = len(decoded['events'])
+  for i in range(no_event):
+      event = decoded['events'][i]
+      event_handle(event)
+
+  #print("ผู้ใช้：",user)
+  #sendText(user,'งง') # ส่งข้อความ งง
   return '',200
 
-def sendText(user, text):
+def event_handle(event):
+    print(event)
+    try:
+        userId = event['source']['userId']
+    except:
+        print('error cannot get userId')
+        return ''
+
+    try:
+        rtoken = event['replyToken']
+    except:
+        print('error cannot get rtoken')
+        return ''
+    try:
+        msgId = event["message"]["id"]
+        msgType = event["message"]["type"]
+    except:
+        print('error cannot get msgID, and msgType')
+        sk_id = np.random.randint(1,17)
+        replyObj = StickerSendMessage(package_id=str(1),sticker_id=str(sk_id))
+        line_bot_api.reply_message(rtoken, replyObj)
+        return ''
+
+    if msgType == "text":
+        msg = str(event["message"]["text"])
+        replyObj = TextSendMessage(text=msg)
+        line_bot_api.reply_message(rtoken, replyObj)
+
+    else:
+        sk_id = np.random.randint(1,17)
+        replyObj = StickerSendMessage(package_id=str(1),sticker_id=str(sk_id))
+        line_bot_api.reply_message(rtoken, replyObj)
+    return ''
+
+""" def sendText(user, text):
   LINE_API = 'https://api.line.me/v2/bot/message/reply'
   Authorization = 'Bearer ' + os.environ['Authorization'] # ตั้ง Config vars ใน heroku พร้อมค่า Access token
   headers = {
@@ -39,6 +87,6 @@ def sendText(user, text):
     "messages":[{"type":"text","text":text}]
   })
   r = requests.post(LINE_API, headers=headers, data=data) # ส่งข้อมูล
-
+ """
 if __name__ == '__main__':
     app.run()

@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 import os
 import json
-#import requests
 import numpy as np
 
 from linebot.models import (

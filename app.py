@@ -73,18 +73,5 @@ def event_handle(event):
         line_bot_api.reply_message(rtoken, replyObj)
     return ''
 
-""" def sendText(user, text):
-  LINE_API = 'https://api.line.me/v2/bot/message/reply'
-  Authorization = 'Bearer ' + os.environ['Authorization'] # ตั้ง Config vars ใน heroku พร้อมค่า Access token
-  headers = {
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Authorization': Authorization
-  }
-  data = json.dumps({
-    "replyToken":user,
-    "messages":[{"type":"text","text":text}]
-  })
-  r = requests.post(LINE_API, headers=headers, data=data) # ส่งข้อมูล
- """
 if __name__ == '__main__':
     app.run()

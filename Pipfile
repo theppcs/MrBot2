@@ -8,6 +8,7 @@ gunicorn = "*"
 flask = "*"
 requests = "*"
 line-bot-sdk = "*"
+numpy = "*"
 
 [dev-packages]
 

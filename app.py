@@ -37,7 +37,7 @@ def generating_answer(question_from_dialogflow_dict):
 
     intent_group_question_str = question_from_dialogflow_dict["queryResult"]["intent"]["displayName"]
 
-    if intent_group_question_str == 'กินอะไรดี':
+    if intent_group_question_str == 'LotteryRandom':
       answer_str = menurecommendation()
     elif intent_group_question_str == 'BMI - Confirmed W and H':
       answer_str = BMI_calculation(question_from_dialogflow_dict)
@@ -50,8 +50,8 @@ def generating_answer(question_from_dialogflow_dict):
     return answer_from_bot
 
 def menurecommendation():
-    menu_name = 'สุกี้แห้ง'
-    answer_function = menu_name + ' สิ น่ากินนะ'
+    menu_name = '428358'
+    answer_function = menu_name + ' สิ ถูกแน่นอน'
     return answer_function
 
 def BMI_calculation(response_dict):

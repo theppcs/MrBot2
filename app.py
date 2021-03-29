@@ -58,9 +58,9 @@ def menurecommendation():
 
 def BMI_calculation(response_dict):
     print('response_dict')
-    print(json.dumps(response_dict["queryResult"]["outputContexts"][2], indent=4, ensure_ascii=False))
-    weight_kg = float(response_dict["queryResult"]["outputContexts"][2]["parameters"]["Weight.original"])    
-    height_cm = float(response_dict["queryResult"]["outputContexts"][2]["parameters"]["Height.original"])    
+    print(json.dumps(response_dict["queryResult"]["outputContexts"][1], indent=4, ensure_ascii=False))
+    weight_kg = float(response_dict["queryResult"]["outputContexts"][1]["parameters"]["Weight.original"])    
+    height_cm = float(response_dict["queryResult"]["outputContexts"][1]["parameters"]["Height.original"])    
 
     BMI = weight_kg / (height_cm/100)**2
     if BMI < 18.5 :

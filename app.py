@@ -13,9 +13,13 @@ from linebot import (
 
 app = Flask(__name__)
 
+lineaccesstoken = os.environ['Authorization']
+line_bot_api = LineBotApi(lineaccesstoken)
+
+####################### new ########################
+
 @app.route('/')
 def index():
-#    a=os.environ['Authorization']
     return "Test Line Bot"
 
 @app.route("/webhook", methods=['POST'])
@@ -28,17 +32,10 @@ def callback():
   json_line = request.get_json()
   json_line = json.dumps(json_line)
   decoded = json.loads(json_line)
-  #user = decoded["events"][0]['replyToken']
-  #id=[d['replyToken'] for d in user][0]
-  #print(json_line)
-
   no_event = len(decoded['events'])
   for i in range(no_event):
       event = decoded['events'][i]
       event_handle(event)
-
-  #print("ผู้ใช้：",user)
-  #sendText(user,'งง') # ส่งข้อความ งง
   return '',200
 
 def event_handle(event):

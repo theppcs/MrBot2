@@ -43,7 +43,7 @@ def generating_answer(question_from_dialogflow_dict):
       answer_str = BMI_calculation(question_from_dialogflow_dict)
     else: answer_str = "หนูไม่รู้"
 
-    answer_from_bot = {"fulfilmentText": answer_str}
+    answer_from_bot = {"fulfillmentText": answer_str}
 
     answer_from_bot = json.dumps(answer_from_bot, indent=4)
     print('answer_from_bot')
@@ -58,7 +58,7 @@ def menurecommendation():
 
 def BMI_calculation(response_dict):
     print('response_dict')
-    print(json.dumps(response_dict, indent=4, ensure_ascii=False))
+    print(json.dumps(response_dict["queryResult"]["outputContexts"][2], indent=4, ensure_ascii=False))
     weight_kg = float(response_dict["queryResult"]["outputContexts"][2]["parameters"]["Weight.original"])    
     height_cm = float(response_dict["queryResult"]["outputContexts"][2]["parameters"]["Height.original"])    
 

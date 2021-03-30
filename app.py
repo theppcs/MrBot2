@@ -53,7 +53,7 @@ def generating_answer(question_from_dialogflow_dict):
 
 def numberrecommendation():
     menu_name = str(np.random.randint(0,9)) + str(np.random.randint(0,9)) + str(np.random.randint(0,9))
-    menu_name = menu_name + np.random.randint(0,9) + np.random.randint(0,9) + np.random.randint(0,9)
+    menu_name = menu_name + str(np.random.randint(0,9)) + str(np.random.randint(0,9)) + str(np.random.randint(0,9))
     answer_function = menu_name + ' สิ ถูกแน่นอน'
     return answer_function
 
